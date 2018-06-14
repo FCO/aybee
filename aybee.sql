@@ -143,6 +143,13 @@ $$ language sql stable;
 
 comment on function aybee_dashboard.logged_user() is 'Gets the person who was identified by our JWT.';
 
+create or replace function aybee_dashboard.logged_organization() returns aybee_dashboard.organization as $$
+  select *
+  from aybee_dashboard.organization
+  where id = current_setting('jwt.claims.organization_id')::uuid
+$$ language sql stable;
+
+comment on function aybee_dashboard.logged_organization() is 'Gets the organization who was identified by our JWT.';
 
 
 grant usage on schema aybee_dashboard to aybee_anonymous, aybee_dashboard_loggedin;
@@ -152,6 +159,7 @@ grant select, update, delete on table aybee_dashboard.person to aybee_dashboard_
 grant select, update, delete on table aybee_dashboard.organization to aybee_dashboard_loggedin;
 
 grant execute on function aybee_dashboard.logged_user() to aybee_anonymous, aybee_dashboard_loggedin;
+grant execute on function aybee_dashboard.logged_organization() to aybee_anonymous, aybee_dashboard_loggedin;
 
 grant execute on function aybee_dashboard.register_organization(text, text, text, text) to aybee_anonymous;
 grant execute on function aybee_dashboard._register_person(uuid, text, text, text, bool) to aybee_dashboard_loggedin;
