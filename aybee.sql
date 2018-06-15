@@ -12,6 +12,8 @@ create role aybee_dashboard_loggedin;
 grant aybee_anonymous to aybee_postgraphile;
 grant aybee_dashboard_loggedin to aybee_postgraphile;
 
+-----------------------------------------------------------------------------------------------------------
+
 drop type if exists aybee_dashboard.jwt_token cascade;
 create type aybee_dashboard.jwt_token as (
   role text,
@@ -19,6 +21,17 @@ create type aybee_dashboard.jwt_token as (
   organization_id uuid,
   admin integer
 );
+
+drop type if exists aybee_dashboard.authenticate_select_response cascade;
+create type aybee_dashboard.authenticate_select_response as (
+  role text,
+  person_id uuid,
+  organization_id uuid,
+  password_hash text,
+  admin integer
+);
+
+-----------------------------------------------------------------------------------------------------------
 
 drop table if exists aybee_dashboard.organization cascade;
 create table aybee_dashboard.organization (
@@ -43,6 +56,8 @@ create table aybee_private.account (
     password_hash    text not null
 );
 
+----------------------------------------------------------------------------------------------------------
+
 create or replace function aybee_dashboard.register_organization(
   name text,
   username text,
@@ -61,7 +76,6 @@ end;
 $$ language plpgsql strict security definer;
 
 comment on function aybee_dashboard.register_organization(text, text, text, text) is 'Registers a organization and an admin user for it';
-
 
 create or replace function aybee_dashboard.register_person(
   name text,
@@ -103,16 +117,6 @@ $$ language plpgsql strict security definer;
 
 comment on function aybee_dashboard._register_person(uuid, text, text, text, bool) is 'Registers a single user and creates an account in our forum.';
 
-drop type if exists aybee_dashboard.authenticate_select_response cascade;
-create type aybee_dashboard.authenticate_select_response as (
-  role text,
-  person_id uuid,
-  organization_id uuid,
-  password_hash text,
-  admin integer
-);
-
-
 create or replace function aybee_dashboard.authenticate(
   email text,
   password text
@@ -120,7 +124,6 @@ create or replace function aybee_dashboard.authenticate(
 declare
   acc aybee_dashboard.authenticate_select_response;
 begin
-  --raise EXCEPTION 'email => %; password => %', email, password;
   select 'aybee_dashboard_loggedin' as role, a.person_id, b.organization_id, a.password_hash, b.admin::integer into acc
   from aybee_private.account as a, aybee_dashboard.person as b
   where a.person_id = b.id AND a.email = $1;
@@ -152,6 +155,9 @@ $$ language sql stable;
 comment on function aybee_dashboard.logged_organization() is 'Gets the organization who was identified by our JWT.';
 
 
+-----------------------------------------------------------------------------------------------------------------------
+
+
 grant usage on schema aybee_dashboard to aybee_anonymous, aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.authenticate(text, text) to aybee_anonymous, aybee_dashboard_loggedin;
 
@@ -166,7 +172,7 @@ grant execute on function aybee_dashboard._register_person(uuid, text, text, tex
 grant execute on function aybee_dashboard.register_person(text, text, text, bool) to aybee_dashboard_loggedin;
 
 
-
+----------------------------------------------------------------------------------------------------------------------
 
 
 alter table aybee_dashboard.person enable row level security;
@@ -191,6 +197,10 @@ create policy delete_organization on aybee_dashboard.organization for delete usi
     id = current_setting('jwt.claims.organization_id')::uuid
     and current_setting('jwt.claims.admin')::integer = 1
 );
+
+
+-------------------------------------------------------------------------------------------------------------------
+
 
 
 insert into aybee_dashboard.organization( id, name ) values ('979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'aybee');
