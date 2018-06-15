@@ -1,0 +1,16 @@
+{
+  "name": "aybee-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "postgraphile -c postgres://localhost/aybee --schema=aybee_dashboard --default-role aybee_postgraphile --token aybee_dashboard.jwt_token --secret blablabla --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "postgraphile": "^4.0.0-rc.1",
+    "webpack": "^4.12.0"
+  }
+}
