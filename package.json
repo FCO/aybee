@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "postgraphile -c postgres://localhost/aybee --schema=aybee_dashboard --default-role aybee_postgraphile --token aybee_dashboard.jwt_token --secret blablabla --watch"
+    "start": "postgraphile -c postgres://localhost/aybee --schema=aybee_dashboard --default-role aybee_postgraphile --token aybee_dashboard.jwt_token --secret blablabla --watch --cors"
   },
   "author": "",
   "license": "ISC",
