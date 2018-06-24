@@ -1,3 +1,17 @@
+create or replace function aybee_private.register_organization_and_set_claims(
+  name text,
+  username text,
+  email text,
+  password text
+) returns void as $$
+declare
+  org_id uuid;
+begin
+    select id into org_id from aybee_dashboard.register_organization(name, username, email, password);
+    set local jwt.claims.organization_id to org_id;
+end;
+$$ language plpgsql;
+
 create or replace function aybee_dashboard.register_organization(
   name text,
   username text,

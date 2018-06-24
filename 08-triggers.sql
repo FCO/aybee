@@ -1,4 +1,4 @@
-create or replace function aybee_dashboard.add_variantion_to_track() returns trigger as $$
+create or replace function aybee_dashboard.add_variant_to_track() returns trigger as $$
 declare
     experiment aybee_dashboard.experiment;
     track aybee_dashboard.track;
@@ -43,4 +43,3 @@ CREATE TRIGGER insert_variant
     AFTER INSERT ON aybee_dashboard.variant
     FOR EACH ROW
     EXECUTE PROCEDURE aybee_dashboard.add_variant_to_track();
-

@@ -12,7 +12,6 @@ grant select, update, insert, delete on table aybee_dashboard.variant_track to a
 grant execute on function aybee_dashboard.logged_user()             to aybee_anonymous, aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.logged_organization()     to aybee_anonymous, aybee_dashboard_loggedin;
 
-grant execute on function aybee_dashboard.add_variation_to_track(aybee_dashboard.variant)   to aybee_anonymous;
 grant execute on function aybee_dashboard.register_organization(text, text, text, text)     to aybee_anonymous;
 grant execute on function aybee_dashboard._register_person(uuid, text, text, text, bool)    to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.register_person(text, text, text, bool)           to aybee_dashboard_loggedin;
