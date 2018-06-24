@@ -17,6 +17,8 @@ grant execute on function aybee_dashboard._register_person(uuid, text, text, tex
 grant execute on function aybee_dashboard.register_person(text, text, text, bool)           to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.register_platform(text)                           to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.register_track(text, text)                        to aybee_dashboard_loggedin;
+grant execute on function aybee_dashboard.register_experiment(text)                         to aybee_dashboard_loggedin;
+grant execute on function aybee_dashboard.register_experiment(text, text)                   to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.track_percentage_used(aybee_dashboard.track)      to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.track_percentage_free(aybee_dashboard.track)      to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.track_free_ranges(aybee_dashboard.track)          to aybee_dashboard_loggedin;

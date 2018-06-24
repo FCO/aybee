@@ -141,5 +141,36 @@ begin
 end;
 $$ language plpgsql strict;
 
+create or replace function aybee_dashboard.register_experiment(
+  name      text
+) returns aybee_dashboard.experiment as $$
+declare
+  organization_id   uuid;
+  experiment        aybee_dashboard.experiment;
+begin
+  select current_setting('jwt.claims.organization_id')::uuid into organization_id;
+  insert into aybee_dashboard.experiment(name, organization_id)
+    values(name, organization_id) returning * into experiment;
+  return experiment;
+end;
+$$ language plpgsql strict;
+
+create or replace function aybee_dashboard.register_experiment(
+  name          text,
+  track_name    text
+) returns aybee_dashboard.experiment as $$
+declare
+  organization_id   uuid;
+  track_id          uuid;
+  experiment        aybee_dashboard.experiment;
+begin
+  select current_setting('jwt.claims.organization_id')::uuid into organization_id;
+  select id into track_id from track where name = track_name;
+  insert into aybee_dashboard.experiment(name, organization_id, track_id)
+    values(name, organization_id, track_id) returning * into experiment;
+  return experiment;
+end;
+$$ language plpgsql strict;
+
 comment on function aybee_dashboard.register_person(text, text, text, bool) is 'Registers a single user and creates an account in our forum.';
 

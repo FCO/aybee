@@ -11,7 +11,7 @@ services:
     image: graphile/postgraphile
     command: -c postgres://aybee_postgraphile:xyz@db/aybee --schema=aybee_dashboard --default-role aybee_postgraphile --token aybee_dashboard.jwt_token --secret blablabla --cors
     ports:
-      - 5000
+      - "5000:5000"
     depends_on:
       - db
     restart: always
