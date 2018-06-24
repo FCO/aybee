@@ -5,7 +5,6 @@ create or replace function aybee_dashboard.add_percentage_of_variant_to_track(
 ) returns void as $$
 declare
     experiment aybee_dashboard.experiment;
-    track aybee_dashboard.track;
     reamain_size numeric;
     range numrange;
 begin
@@ -44,7 +43,7 @@ begin
         t.id = e.track_id
         and new.experiment_id = e.id;
 
-        select aybee_dashboard.add_percentage_of_variant_to_track(new, track, new.percentage);
+        PERFORM aybee_dashboard.add_percentage_of_variant_to_track(new, track, new.percent);
     return new;
 end;
 $$ language plpgsql;

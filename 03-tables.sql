@@ -47,7 +47,7 @@ create table aybee_dashboard.experiment (
     organization_id  uuid not null references aybee_dashboard.organization(id) on delete cascade,
     track_id         uuid     null references aybee_dashboard.track(id),
     name             text not null,
-    unique (track_id, name)
+    unique (organization_id, name)
 );
 
 create table aybee_dashboard.variant (
