@@ -16,3 +16,8 @@ create type aybee_dashboard.authenticate_select_response as (
   admin integer
 );
 
+create type aybee_dashboard.id_percent_range as (
+    id              uuid,
+    percent_range   numrange
+);
+

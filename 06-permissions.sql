@@ -23,8 +23,3 @@ grant execute on function aybee_dashboard.track_percentage_used(aybee_dashboard.
 grant execute on function aybee_dashboard.track_percentage_free(aybee_dashboard.track)      to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.track_free_ranges(aybee_dashboard.track)          to aybee_dashboard_loggedin;
 
-grant execute on function aybee_dashboard.add_percentage_of_variant_to_track(
-    aybee_dashboard.variant,
-    aybee_dashboard.track,
-    numeric
-) to aybee_dashboard_loggedin;

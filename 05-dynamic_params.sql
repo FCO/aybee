@@ -40,11 +40,12 @@ create or replace function aybee_dashboard.track_free_ranges(
             ranges
     )
     select
-        numrange(upper(range), lower(lrange), '(]')
+        numrange(upper(range), lower(lrange), '[)')
     from
         r
     where
         not range -|- lrange
+        and not isempty(numrange(upper(range), lower(lrange), '[)'))
     ;
 $$ language sql stable;
 
