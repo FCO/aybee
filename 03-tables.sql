@@ -36,6 +36,8 @@ create table aybee_dashboard.platform (
 
 create table aybee_dashboard.track (
     id               uuid not null primary key default uuid_generate_v1mc(),
+    salt             uuid not null default uuid_generate_v1mc(),
+    copy_of          uuid     null references aybee_dashboard.track(id),
     organization_id  uuid not null references aybee_dashboard.organization(id) on delete cascade,
     platform_id      uuid not null references aybee_dashboard.platform(id) on delete cascade,
     name             text not null,
@@ -47,6 +49,7 @@ create table aybee_dashboard.experiment (
     organization_id  uuid not null references aybee_dashboard.organization(id) on delete cascade,
     track_id         uuid     null references aybee_dashboard.track(id),
     name             text not null,
+    segregating      bool not null default 'f',
     unique (organization_id, name)
 );
 

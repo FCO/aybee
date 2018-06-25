@@ -172,5 +172,31 @@ $$ language plpgsql strict;
 --end;
 --$$ language plpgsql strict;
 
-comment on function aybee_dashboard.register_person(text, text, text, bool) is 'Registers a single user and creates an account in our forum.';
+--comment on function aybee_dashboard.register_person(text, text, text, bool) is 'Registers a single user and creates an account in our forum.';
+
+create or replace function aybee_dashboard.copy_track(
+  track      aybee_dashboard.track
+) returns aybee_dashboard.track as $$
+  insert into aybee_dashboard.track(name, organization_id, platform_id, salt)
+    values(track.name || ' (copy)', track.organization_id, track.platform_id, track.salt) returning *;
+$$ language sql strict;
+
+
+create or replace function aybee_dashboard.segregate_experiment(
+  ex aybee_dashboard.experiment
+) returns aybee_dashboard.experiment as $$
+declare
+    old_track aybee_dashboard.track;
+    new_track aybee_dashboard.track;
+begin
+  update aybee_dashboard.experiment set segregating = 't' where id = ex.id;
+  select * into old_track from aybee_dashboard.track where id = ex.track_id;
+  select * into new_track FROM aybee_dashboard.copy_track(old_track);
+  update aybee_dashboard.variant_track set track_id = new_track.id where variant_id in (
+    select id from aybee_dashboard.variant where experiment_id = ex.id
+  );
+  update aybee_dashboard.experiment set track_id = new_track.id, segregating = 'f' where id = ex.id;
+  return ex;
+end;
+$$ language plpgsql strict;
 

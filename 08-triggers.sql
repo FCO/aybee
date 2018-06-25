@@ -14,7 +14,6 @@ begin
     end if;
     reamain_size := add_percentage;
     for range in select * from aybee_dashboard.track_free_ranges(track) loop
-        RAISE NOTICE 'free range ==================> %', range;
         if reamain_size <= upper(range) - lower(range) then
             insert into aybee_dashboard.variant_track(track_id, variant_id, organization_id, percent_range)
             values(track.id, variant.id, variant.organization_id, numrange(lower(range), lower(range) + reamain_size, '[)'));
