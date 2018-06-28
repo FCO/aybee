@@ -128,6 +128,24 @@ begin
 end;
 $$ language plpgsql;
 
+create or replace function aybee_dashboard.experiment_change_track() returns trigger as $$
+declare
+    variant     aybee_dashboard.variant;
+    old_track   aybee_dashboard.track;
+    new_track   aybee_dashboard.track;
+begin
+    RAISE NOTICE 'running trigger for experiment %', new.name;
+    select * into old_track from aybee_dashboard.track where id = old.track_id;
+    select * into new_track from aybee_dashboard.track where id = new.track_id;
+    for variant in select * from aybee_dashboard.variant where experiment_id = old.id loop
+        RAISE NOTICE 'running trigger for experiment % ---> variant: %', new.name, variant.name;
+        perform aybee_dashboard.subtract_percentage_of_variant_to_track(variant, old_track, variant.percent);
+        perform aybee_dashboard.add_percentage_of_variant_to_track(variant, new_track, variant.percent);
+    end loop;
+    return new;
+end;
+$$ language plpgsql;
+
 grant execute on function aybee_dashboard.add_percentage_of_variant_to_track(
     aybee_dashboard.variant,
     aybee_dashboard.track,
@@ -159,3 +177,10 @@ CREATE TRIGGER decrease_variant_percentage
     FOR EACH ROW
     WHEN (OLD.percent > NEW.percent)
     EXECUTE PROCEDURE aybee_dashboard.decrease_variant_to_track();
+
+drop TRIGGER if exists experiment_change_track on aybee_dashboard.experiment;
+CREATE TRIGGER experiment_change_track
+    AFTER UPDATE ON aybee_dashboard.experiment
+    FOR EACH ROW
+    WHEN (OLD.track_id is distinct from NEW.track_id and not OLD.segregating and not NEW.segregating)
+    EXECUTE PROCEDURE aybee_dashboard.experiment_change_track();

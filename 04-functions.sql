@@ -177,8 +177,8 @@ $$ language plpgsql strict;
 create or replace function aybee_dashboard.copy_track(
   track      aybee_dashboard.track
 ) returns aybee_dashboard.track as $$
-  insert into aybee_dashboard.track(name, organization_id, platform_id, salt)
-    values(track.name || ' (copy)', track.organization_id, track.platform_id, track.salt) returning *;
+  insert into aybee_dashboard.track(name, organization_id, platform_id, salt, copy_of)
+    values(track.name || ' (copy)', track.organization_id, track.platform_id, track.salt, track.id) returning *;
 $$ language sql strict;
 
 
