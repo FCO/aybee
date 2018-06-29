@@ -1,10 +1,12 @@
-alter table aybee_dashboard.person          enable row level security;
-alter table aybee_dashboard.organization    enable row level security;
-alter table aybee_dashboard.platform        enable row level security;
-alter table aybee_dashboard.track           enable row level security;
-alter table aybee_dashboard.experiment      enable row level security;
-alter table aybee_dashboard.variant         enable row level security;
-alter table aybee_dashboard.variant_track   enable row level security;
+alter table aybee_dashboard.person              enable row level security;
+alter table aybee_dashboard.organization        enable row level security;
+alter table aybee_dashboard.platform            enable row level security;
+alter table aybee_dashboard.track               enable row level security;
+alter table aybee_dashboard.experiment          enable row level security;
+alter table aybee_dashboard.variant             enable row level security;
+alter table aybee_dashboard.variant_track       enable row level security;
+alter table aybee_dashboard.variable            enable row level security;
+alter table aybee_dashboard.variable_variant    enable row level security;
 
 drop policy IF EXISTS select_person on aybee_dashboard.person;
 create policy select_person         on aybee_dashboard.person           for select  using (
@@ -49,6 +51,16 @@ create policy select_experiment     on aybee_dashboard.experiment using (
 
 drop policy IF EXISTS select_variant on aybee_dashboard.variant;
 create policy select_variant        on aybee_dashboard.variant using (
+    organization_id = current_setting('jwt.claims.organization_id')::uuid
+);
+
+drop policy IF EXISTS select_variable on aybee_dashboard.variable;
+create policy select_variable        on aybee_dashboard.variable using (
+    organization_id = current_setting('jwt.claims.organization_id')::uuid
+);
+
+drop policy IF EXISTS select_variable_variant on aybee_dashboard.variable_variant;
+create policy select_variable_variant        on aybee_dashboard.variable_variant using (
     organization_id = current_setting('jwt.claims.organization_id')::uuid
 );
 

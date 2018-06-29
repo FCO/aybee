@@ -72,3 +72,19 @@ create table aybee_dashboard.variant_track (
     exclude using gist (track_id with =, percent_range with &&)
 );
 
+create table aybee_dashboard.variable (
+    id               uuid       not null primary key default uuid_generate_v1mc(),
+    organization_id  uuid       not null references aybee_dashboard.organization(id) on delete cascade,
+    platform_id      uuid       not null references aybee_dashboard.platform(id) on delete cascade,
+    name             text       not null,
+    unique (organization_id, platform_id, name)
+);
+
+create table aybee_dashboard.variable_variant (
+    id               uuid       not null primary key default uuid_generate_v1mc(),
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    variable_id      uuid       not null references aybee_dashboard.variable(id)        on delete cascade,
+    variant_id       uuid       not null references aybee_dashboard.variant(id)         on delete cascade,
+    value            json       not null
+);
+

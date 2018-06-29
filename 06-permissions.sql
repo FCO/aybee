@@ -1,13 +1,15 @@
 grant usage on schema aybee_dashboard                               to aybee_anonymous, aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.authenticate(text, text)  to aybee_anonymous, aybee_dashboard_loggedin;
 
-grant select, update, insert, delete on table aybee_dashboard.person        to aybee_dashboard_loggedin;
-grant select, update, insert, delete on table aybee_dashboard.organization  to aybee_dashboard_loggedin;
-grant select, update, insert, delete on table aybee_dashboard.platform      to aybee_dashboard_loggedin;
-grant select, update, insert, delete on table aybee_dashboard.track         to aybee_dashboard_loggedin;
-grant select, update, insert, delete on table aybee_dashboard.experiment    to aybee_dashboard_loggedin;
-grant select, update, insert, delete on table aybee_dashboard.variant       to aybee_dashboard_loggedin;
-grant select, update, insert, delete on table aybee_dashboard.variant_track to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.person                to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.organization          to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.platform              to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.track                 to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.experiment            to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.variant               to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.variant_track         to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.variable              to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.variable_variant      to aybee_dashboard_loggedin;
 
 grant execute on function aybee_dashboard.logged_user()             to aybee_anonymous, aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.logged_organization()     to aybee_anonymous, aybee_dashboard_loggedin;
