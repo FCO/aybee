@@ -77,5 +77,24 @@ do $$
             from
                 aybee_dashboard.variant_track
             ) = 5;
+        update aybee_dashboard.experiment set track_id = '979fc2bc-6f54-11e8-a172-7fb168c1de7f';
+        assert (
+            select
+                count(*)
+            from
+                aybee_dashboard.variant_track
+            where
+                track_id = '979fc2bc-6f54-11e8-a172-7fb168c1de7f'
+            ) = 3;
+        assert (
+            select
+                count(*)
+            from
+                aybee_dashboard.variant_track
+            ) = 3;
+        insert into aybee_dashboard.variable(id, organization_id, platform_id, name)
+            values('979fc2bc-6f54-11e8-a172-111111111111', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'bla');
+        insert into aybee_dashboard.variable_variant(organization_id, variable_id, variant_id, value)
+            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-111111111111', 'b824cff8-77fd-11e8-b5d6-2f651c118cf6', '{"bla":"ble"}');
     end;
 $$
