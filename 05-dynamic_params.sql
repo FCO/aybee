@@ -49,3 +49,16 @@ create or replace function aybee_dashboard.track_free_ranges(
     ;
 $$ language sql stable;
 
+create or replace function aybee_dashboard.variant_variables(
+    variant aybee_dashboard.variant
+) returns jsonb as $$
+    select
+        jsonb_object_agg(var.name, vv.value)
+    from
+        aybee_dashboard.variable_variant as vv,
+        aybee_dashboard.variable var
+    where
+        vv.variant_id = variant.id
+        and vv.variable_id = var.id
+$$ language sql stable;
+

@@ -55,8 +55,8 @@ create table aybee_dashboard.experiment (
 
 create table aybee_dashboard.variant (
     id               uuid       not null primary key default uuid_generate_v1mc(),
-    organization_id  uuid       not null references aybee_dashboard.organization(id) on delete cascade,
-    experiment_id    uuid       not null references aybee_dashboard.experiment(id) on delete cascade,
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    experiment_id    uuid       not null references aybee_dashboard.experiment(id)      on delete cascade,
     name             text       not null,
     percent          numeric    not null,
     unique (experiment_id, name),
@@ -65,17 +65,17 @@ create table aybee_dashboard.variant (
 
 create table aybee_dashboard.variant_track (
     id               uuid       not null primary key default uuid_generate_v1mc(),
-    organization_id  uuid       not null references aybee_dashboard.organization(id) on delete cascade,
-    track_id         uuid       not null references aybee_dashboard.track(id) on delete cascade,
-    variant_id       uuid       not null references aybee_dashboard.variant(id) on delete cascade,
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    track_id         uuid       not null references aybee_dashboard.track(id)           on delete cascade,
+    variant_id       uuid       not null references aybee_dashboard.variant(id)         on delete cascade,
     percent_range    numrange   not null,
     exclude using gist (track_id with =, percent_range with &&)
 );
 
 create table aybee_dashboard.variable (
     id               uuid       not null primary key default uuid_generate_v1mc(),
-    organization_id  uuid       not null references aybee_dashboard.organization(id) on delete cascade,
-    platform_id      uuid       not null references aybee_dashboard.platform(id) on delete cascade,
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    platform_id      uuid       not null references aybee_dashboard.platform(id)        on delete cascade,
     name             text       not null,
     unique (organization_id, platform_id, name)
 );
