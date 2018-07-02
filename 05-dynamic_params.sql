@@ -53,7 +53,7 @@ create or replace function aybee_dashboard.variant_variables(
     variant aybee_dashboard.variant
 ) returns jsonb as $$
     select
-        jsonb_object_agg(var.name, vv.value)
+        coalesce(jsonb_object_agg(var.name, vv.value), '{}'::jsonb)
     from
         aybee_dashboard.variable_variant as vv,
         aybee_dashboard.variable var
