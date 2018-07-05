@@ -21,3 +21,10 @@ create type aybee_dashboard.id_percent_range as (
     percent_range   numrange
 );
 
+create type aybee_dashboard.config as (
+    track       text,
+    salt        uuid,
+    experiment  text,
+    variant     text,
+    variables   jsonb
+);

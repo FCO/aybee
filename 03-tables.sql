@@ -85,6 +85,6 @@ create table aybee_dashboard.variable_variant (
     organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
     variable_id      uuid       not null references aybee_dashboard.variable(id)        on delete cascade,
     variant_id       uuid       not null references aybee_dashboard.variant(id)         on delete cascade,
-    value            json       not null
+    value            jsonb      not null
 );
 

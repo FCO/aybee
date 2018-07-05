@@ -8,7 +8,7 @@ create  extension if not exists "btree_gist";
 alter   default privileges revoke execute on functions from public;
 
 create  role aybee_postgraphile login password 'xyz';
-create  role aybee_anonymous;
+create  role aybee_anonymous login password 'abc';
 create  role aybee_dashboard_loggedin;
 grant   aybee_anonymous             to aybee_postgraphile;
 grant   aybee_dashboard_loggedin    to aybee_postgraphile;

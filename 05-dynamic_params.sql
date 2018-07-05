@@ -62,18 +62,24 @@ create or replace function aybee_dashboard.variant_variables(
         and vv.variable_id = var.id
 $$ language sql stable;
 
-select
-    t.name as track,
-    t.salt as salt,
-    e.name as experiment,
-    v.name as variant,
-    aybee_dashboard.variant_variables(v) as variables
-from
-    aybee_dashboard.track as t
-    join aybee_dashboard.variant_track as vt on (t.id = vt.track_id)
-    join aybee_dashboard.variant as v on (vt.variant_id = v.id)
-    join aybee_dashboard.experiment as e on (v.experiment_id = e.id)
-where
-    t.organization_id = '979fc2bc-6f54-11e8-a172-7fb168c1de7f'
-    and t.platform_id = '979fc2bc-6f54-11e8-a172-7fb168c1de7f'
-;
+create or replace function aybee_dashboard.get_config(
+    organization uuid,
+    platform     uuid
+) returns setof aybee_dashboard.config as $$
+    select
+        t.name as track,
+        t.salt as salt,
+        e.name as experiment,
+        v.name as variant,
+        aybee_dashboard.variant_variables(v) as variables
+    from
+        aybee_dashboard.track as t
+        join aybee_dashboard.variant_track as vt on (t.id = vt.track_id)
+        join aybee_dashboard.variant as v on (vt.variant_id = v.id)
+        join aybee_dashboard.experiment as e on (v.experiment_id = e.id)
+    where
+        t.organization_id = organization
+        and t.platform_id = platform
+    ;
+$$ language sql stable strict security definer;
+
