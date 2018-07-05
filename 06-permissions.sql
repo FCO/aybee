@@ -27,5 +27,6 @@ grant execute on function aybee_dashboard.track_free_ranges(aybee_dashboard.trac
 grant execute on function aybee_dashboard.copy_track(aybee_dashboard.track)                 to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.segregate_experiment(aybee_dashboard.experiment)  to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.variant_variables(aybee_dashboard.variant)        to aybee_dashboard_loggedin;
+grant execute on function aybee_dashboard.variant_ranges(aybee_dashboard.variant)           to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.get_config(uuid, uuid)                            to aybee_dashboard_loggedin,aybee_anonymous;
 

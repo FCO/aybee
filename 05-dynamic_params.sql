@@ -62,16 +62,29 @@ create or replace function aybee_dashboard.variant_variables(
         and vv.variable_id = var.id
 $$ language sql stable;
 
+create or replace function aybee_dashboard.variant_ranges(
+    variant aybee_dashboard.variant
+) returns setof numrange as $$
+    select
+        vt.percent_range
+    from
+        aybee_dashboard.variant_track as vt
+    where
+        vt.variant_id = variant.id
+$$ language sql stable;
+
 create or replace function aybee_dashboard.get_config(
     organization uuid,
     platform     uuid
 ) returns setof aybee_dashboard.config as $$
     select
-        t.name as track,
-        t.salt as salt,
-        e.name as experiment,
-        v.name as variant,
-        aybee_dashboard.variant_variables(v) as variables
+        t.name      as track,
+        t.salt      as salt,
+        e.name      as experiment,
+        v.name      as variant,
+        v.percent   as percent,
+        aybee_dashboard.variant_variables(v) as variables,
+        ARRAY(select aybee_dashboard.variant_ranges(v)) as ranges
     from
         aybee_dashboard.track as t
         join aybee_dashboard.variant_track as vt on (t.id = vt.track_id)
@@ -80,6 +93,8 @@ create or replace function aybee_dashboard.get_config(
     where
         t.organization_id = organization
         and t.platform_id = platform
+    group by
+        v.id, 1,2,3,4,5
     ;
 $$ language sql stable strict security definer;
 

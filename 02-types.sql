@@ -26,5 +26,7 @@ create type aybee_dashboard.config as (
     salt        uuid,
     experiment  text,
     variant     text,
-    variables   jsonb
+    percent     numeric,
+    variables   jsonb,
+    ranges      numrange[]
 );
