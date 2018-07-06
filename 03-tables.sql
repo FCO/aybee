@@ -34,6 +34,12 @@ create table aybee_dashboard.platform (
     unique (organization_id, name)
 );
 
+create table aybee_dashboard.identifier (
+    id               uuid       not null primary key default uuid_generate_v1mc(),
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    name             text       not null unique
+);
+
 create table aybee_dashboard.track (
     id               uuid not null primary key default uuid_generate_v1mc(),
     salt             uuid not null default uuid_generate_v1mc(),
@@ -41,6 +47,7 @@ create table aybee_dashboard.track (
     organization_id  uuid not null references aybee_dashboard.organization(id) on delete cascade,
     platform_id      uuid not null references aybee_dashboard.platform(id) on delete cascade,
     name             text not null,
+    identifier_id    uuid     null references aybee_dashboard.identifier(id),
     unique (organization_id, platform_id, name)
 );
 
@@ -86,5 +93,12 @@ create table aybee_dashboard.variable_variant (
     variable_id      uuid       not null references aybee_dashboard.variable(id)        on delete cascade,
     variant_id       uuid       not null references aybee_dashboard.variant(id)         on delete cascade,
     value            jsonb      not null
+);
+
+create table aybee_dashboard.token (
+    id               uuid       not null primary key default uuid_generate_v1mc(),
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    platform_id      uuid       not null references aybee_dashboard.platform(id)        on delete cascade,
+    active           boolean    not null default 't'
 );
 

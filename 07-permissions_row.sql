@@ -44,6 +44,11 @@ create policy select_track          on aybee_dashboard.track using (
     organization_id = current_setting('jwt.claims.organization_id')::uuid
 );
 
+drop policy IF EXISTS select_identifier on aybee_dashboard.identifier;
+create policy select_identifier          on aybee_dashboard.identifier using (
+    organization_id = current_setting('jwt.claims.organization_id')::uuid
+);
+
 drop policy IF EXISTS select_experiment on aybee_dashboard.experiment;
 create policy select_experiment     on aybee_dashboard.experiment using (
     organization_id = current_setting('jwt.claims.organization_id')::uuid

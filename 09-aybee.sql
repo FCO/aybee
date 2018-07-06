@@ -21,12 +21,16 @@ do $$
 
         insert into aybee_dashboard.platform( id, organization_id, name )
             values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'iOS');
-        insert into aybee_dashboard.track( id, organization_id, platform_id, name )
-            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'test 001');
+        insert into aybee_dashboard.identifier( id, organization_id, name )
+            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'accountId');
+        insert into aybee_dashboard.track( id, organization_id, platform_id, identifier_id, name )
+            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'test 001');
         insert into aybee_dashboard.experiment( id, organization_id, track_id, name )
             values('6f5794f2-77fa-11e8-af51-33e8d37243c0', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'exp 001');
         insert into aybee_dashboard.variant( id, organization_id, experiment_id, name, percent )
             values('b824cff8-77fd-11e8-b5d6-2f651c118cf6', '979fc2bc-6f54-11e8-a172-7fb168c1de7f', '6f5794f2-77fa-11e8-af51-33e8d37243c0', 'A', .01);
+        insert into aybee_dashboard.token(organization_id, platform_id)
+            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-7fb168c1de7f');
         assert (select count(*) from aybee_dashboard.variant_track) = 1;
         assert (select percent_range from aybee_dashboard.variant_track) = '[0,0.01)'::numrange;
         insert into aybee_dashboard.variant( id, organization_id, experiment_id, name, percent )
