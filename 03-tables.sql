@@ -102,3 +102,9 @@ create table aybee_dashboard.token (
     active           boolean    not null default 't'
 );
 
+create table aybee_dashboard.metric_config (
+    token_id         uuid       not null primary key,
+    metric_storage   aybee_dashboard.metric_storage_type not null default 'influxdb',
+    conf             jsonb      not null default '{"host": "localhost", "database": "aybee"}'::jsonb
+);
+

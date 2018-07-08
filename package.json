@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "influx": "^5.0.7",
     "postgraphile": "^4.0.0-rc.1",
     "webpack": "^4.12.0"
   }

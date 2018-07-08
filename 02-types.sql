@@ -31,3 +31,5 @@ create type aybee_dashboard.config as (
     variables   jsonb,
     ranges      numrange[]
 );
+
+CREATE TYPE aybee_dashboard.metric_storage_type AS ENUM ('influxdb');

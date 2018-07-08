@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   db:
     build: .
@@ -15,3 +15,17 @@ services:
     depends_on:
       - db
     restart: always
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+    environment:
+      - INFLUXDB_DB=aybee
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=senha
