@@ -32,4 +32,4 @@ create type aybee_dashboard.config as (
     ranges      numrange[]
 );
 
-CREATE TYPE aybee_dashboard.metric_storage_type AS ENUM ('influxdb');
+CREATE TYPE aybee_dashboard.metric_storage_type AS ENUM ('influxdb', 'postgresql');

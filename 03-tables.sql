@@ -108,3 +108,11 @@ create table aybee_dashboard.metric_config (
     conf             jsonb      not null default '{"host": "localhost", "database": "aybee"}'::jsonb
 );
 
+create table aybee_metrics.metric (
+    id          serial      not null primary key,
+    created     timestamp   not null default now(),
+    metric      text        not null,
+    session_id  uuid,
+    experiments jsonb       not null default '{}'::jsonb,
+    data        jsonb       not null default '{}'::jsonb
+);
