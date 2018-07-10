@@ -37,4 +37,5 @@ grant execute on function aybee_dashboard.variant_ranges(aybee_dashboard.variant
 grant execute on function aybee_dashboard.get_config(uuid, uuid)                            to aybee_dashboard_loggedin,aybee_anonymous;
 grant execute on function aybee_dashboard.token_config(aybee_dashboard.token)               to aybee_dashboard_loggedin,aybee_anonymous;
 grant execute on function aybee_dashboard.token_metric_config(aybee_dashboard.token)        to aybee_dashboard_loggedin,aybee_anonymous;
+grant execute on function aybee_dashboard.token_metric_type(aybee_dashboard.token)          to aybee_dashboard_loggedin,aybee_anonymous;
 

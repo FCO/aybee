@@ -102,5 +102,13 @@ do $$
             values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', '979fc2bc-6f54-11e8-a172-111111111111', 'b824cff8-77fd-11e8-b5d6-2f651c118cf6', '{"bla":"ble"}');
         insert into aybee_dashboard.metric_config(token_id)
             values('979fc2bc-6f54-11e8-a172-7fb168c1de7f');
+        update aybee_dashboard.metric_config
+            set
+                metric_storage = 'postgresql',
+                conf = '{"user": "aybee_metric_writer", "host": "localhost", "database": "aybee", "password": "123"}';
+        insert into aybee_dashboard.metric_type(organization_id, name)
+            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'productVisualized');
+        insert into aybee_dashboard.metric_type(organization_id, name)
+            values('979fc2bc-6f54-11e8-a172-7fb168c1de7f', 'listProduct');
     end;
 $$

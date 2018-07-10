@@ -142,3 +142,23 @@ create or replace function aybee_dashboard.token_metric_config(
     end;
 $$ language plpgsql stable strict security definer;
 
+create or replace function aybee_dashboard.token_metric_type (
+    token aybee_dashboard.token
+) returns setof aybee_dashboard.metric_type as $$
+    declare
+        conf    aybee_dashboard.metric_type;
+    begin
+        if token.active = 'f' then
+            RAISE EXCEPTION 'Invalid token: %', token.id;
+        end if;
+        return query select
+            *
+        from
+            aybee_dashboard.metric_type
+        where
+            token.active
+            AND organization_id = token.organization_id
+        ;
+    end;
+$$ language plpgsql stable strict security definer;
+
