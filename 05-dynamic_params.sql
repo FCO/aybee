@@ -80,6 +80,7 @@ create or replace function aybee_dashboard.get_config(
     select
         t.name      as track,
         t.salt      as salt,
+        a.name      as area,
         i.name      as identifier,
         e.name      as experiment,
         v.name      as variant,
@@ -87,11 +88,12 @@ create or replace function aybee_dashboard.get_config(
         aybee_dashboard.variant_variables(v) as variables,
         ARRAY(select aybee_dashboard.variant_ranges(v)) as ranges
     from
-        aybee_dashboard.track as t
-        join aybee_dashboard.identifier as i on (i.id = t.identifier_id)
-        join aybee_dashboard.variant_track as vt on (t.id = vt.track_id)
-        join aybee_dashboard.variant as v on (vt.variant_id = v.id)
-        join aybee_dashboard.experiment as e on (v.experiment_id = e.id)
+        aybee_dashboard.track               as t
+        join aybee_dashboard.identifier     as i    on (i.id = t.identifier_id)
+        join aybee_dashboard.variant_track  as vt   on (t.id = vt.track_id)
+        join aybee_dashboard.variant        as v    on (vt.variant_id = v.id)
+        join aybee_dashboard.experiment     as e    on (v.experiment_id = e.id)
+        left join aybee_dashboard.area      as a    on (t.area_id = a.id)
     where
         t.organization_id = organization
         and t.platform_id = platform
@@ -113,6 +115,26 @@ create or replace function aybee_dashboard.token_config(
         aybee_dashboard.get_config(token.organization_id, token.platform_id)
     where
         token.active
+    ;
+    end;
+$$ language plpgsql stable strict security definer;
+
+create or replace function aybee_dashboard.token_area_config (
+    token aybee_dashboard.token,
+    area  text
+) returns setof aybee_dashboard.config as $$
+#variable_conflict use_variable
+    begin
+    if token.active = 'f' then
+        RAISE EXCEPTION 'Invalid token: %', token.id;
+    end if;
+    return query select
+        *
+    from
+        aybee_dashboard.token_config(token) c
+    where
+        c.area = area
+        OR c.area is NULL
     ;
     end;
 $$ language plpgsql stable strict security definer;

@@ -24,6 +24,7 @@ create type aybee_dashboard.id_percent_range as (
 create type aybee_dashboard.config as (
     track       text,
     salt        uuid,
+    area        text,
     identifier  text,
     experiment  text,
     variant     text,

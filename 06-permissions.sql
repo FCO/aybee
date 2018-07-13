@@ -5,6 +5,7 @@ grant execute on function aybee_dashboard.authenticate(text, text)  to aybee_ano
 grant select, update, insert, delete on table aybee_dashboard.person                to aybee_dashboard_loggedin;
 grant select, update, insert, delete on table aybee_dashboard.organization          to aybee_dashboard_loggedin;
 grant select, update, insert, delete on table aybee_dashboard.platform              to aybee_dashboard_loggedin;
+grant select, update, insert, delete on table aybee_dashboard.area                  to aybee_dashboard_loggedin;
 grant select, update, insert, delete on table aybee_dashboard.track                 to aybee_dashboard_loggedin;
 grant select, update, insert, delete on table aybee_dashboard.experiment            to aybee_dashboard_loggedin;
 grant select, update, insert, delete on table aybee_dashboard.variant               to aybee_dashboard_loggedin;
@@ -36,6 +37,8 @@ grant execute on function aybee_dashboard.variant_variables(aybee_dashboard.vari
 grant execute on function aybee_dashboard.variant_ranges(aybee_dashboard.variant)           to aybee_dashboard_loggedin;
 grant execute on function aybee_dashboard.get_config(uuid, uuid)                            to aybee_dashboard_loggedin,aybee_anonymous;
 grant execute on function aybee_dashboard.token_config(aybee_dashboard.token)               to aybee_dashboard_loggedin,aybee_anonymous;
+grant execute on function aybee_dashboard.token_area_config(aybee_dashboard.token, text)
+                                                                                            to aybee_dashboard_loggedin,aybee_anonymous;
 grant execute on function aybee_dashboard.token_metric_config(aybee_dashboard.token)        to aybee_dashboard_loggedin,aybee_anonymous;
 grant execute on function aybee_dashboard.token_metric_type(aybee_dashboard.token)          to aybee_dashboard_loggedin,aybee_anonymous;
 

@@ -40,12 +40,19 @@ create table aybee_dashboard.identifier (
     name             text       not null unique
 );
 
+create table aybee_dashboard.area (
+    id               uuid       not null primary key default uuid_generate_v1mc(),
+    organization_id  uuid       not null references aybee_dashboard.organization(id)    on delete cascade,
+    name             text       not null unique
+);
+
 create table aybee_dashboard.track (
     id               uuid not null primary key default uuid_generate_v1mc(),
     salt             uuid not null default uuid_generate_v1mc(),
     copy_of          uuid     null references aybee_dashboard.track(id),
-    organization_id  uuid not null references aybee_dashboard.organization(id) on delete cascade,
-    platform_id      uuid not null references aybee_dashboard.platform(id) on delete cascade,
+    organization_id  uuid not null references aybee_dashboard.organization(id)  on delete cascade,
+    platform_id      uuid not null references aybee_dashboard.platform(id)      on delete cascade,
+    area_id          uuid     null references aybee_dashboard.area(id)          on delete cascade,
     name             text not null,
     identifier_id    uuid     null references aybee_dashboard.identifier(id),
     unique (organization_id, platform_id, name)
@@ -124,3 +131,4 @@ create table aybee_metrics.metric (
     variant     text            null,
     data        jsonb       not null default '{}'::jsonb
 );
+
