@@ -1,0 +1,3 @@
+[submodule "pghashlib"]
+	path = pghashlib
+	url = https://github.com/markokr/pghashlib.git

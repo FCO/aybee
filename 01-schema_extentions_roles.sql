@@ -6,6 +6,7 @@ create  schema if not exists aybee_metrics;
 create  extension if not exists "uuid-ossp";
 create  extension if not exists "pgcrypto";
 create  extension if not exists "btree_gist";
+create  extension if not exists "hashlib";
 alter   default privileges revoke execute on functions from public;
 
 create  role aybee_postgraphile login password 'xyz';

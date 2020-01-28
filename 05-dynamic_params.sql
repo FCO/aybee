@@ -91,9 +91,9 @@ create or replace function aybee_dashboard.get_config(
         aybee_dashboard.track               as t
         join aybee_dashboard.identifier     as i    on (i.id = t.identifier_id)
         join aybee_dashboard.variant_track  as vt   on (t.id = vt.track_id)
-        join aybee_dashboard.variant        as v    on (vt.variant_id = v.id)
-        join aybee_dashboard.experiment     as e    on (v.experiment_id = e.id)
-        left join aybee_dashboard.area      as a    on (t.area_id = a.id)
+        join aybee_dashboard.variant        as v    on (v.id = vt.variant_id)
+        join aybee_dashboard.experiment     as e    on (e.id = v.experiment_id)
+        left join aybee_dashboard.area      as a    on (a.id = t.area_id)
     where
         t.organization_id = organization
         and t.platform_id = platform
@@ -168,7 +168,7 @@ create or replace function aybee_dashboard.token_metric_type (
     token aybee_dashboard.token
 ) returns setof aybee_dashboard.metric_type as $$
     declare
-        conf    aybee_dashboard.metric_type;
+        conf aybee_dashboard.metric_type;
     begin
         if token.active = 'f' then
             RAISE EXCEPTION 'Invalid token: %', token.id;

@@ -83,6 +83,7 @@ create table aybee_dashboard.variant_track (
     track_id         uuid       not null references aybee_dashboard.track(id)           on delete cascade,
     variant_id       uuid       not null references aybee_dashboard.variant(id)         on delete cascade,
     percent_range    numrange   not null,
+    check ("[0,1]" @> percent_range),
     exclude using gist (track_id with =, percent_range with &&)
 );
 

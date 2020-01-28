@@ -200,3 +200,36 @@ begin
 end;
 $$ language plpgsql strict;
 
+create or replace function aybee_dashboard.get_variants(
+  _id  TEXT,
+  _val NUMERIC
+) returns SETOF aybee_dashboard.variant as $$
+    DECLARE
+        bla TEXT;
+    BEGIN
+        RETURN QUERY SELECT * from aybee_dashboard.get_variants(_id, _val::TEXT);
+    END;
+$$ language plpgsql strict;
+
+create or replace function aybee_dashboard.get_variants(
+  _id TEXT,
+  _val TEXT
+) returns SETOF aybee_dashboard.variant as $$
+    BEGIN
+        RETURN QUERY SELECT
+            v.*
+        FROM
+            aybee_dashboard.track t
+            JOIN aybee_dashboard.variant_track vt ON t.id = vt.track_id
+            JOIN aybee_dashboard.identifier    i  ON i.id = t.identifier_id
+            JOIN aybee_dashboard.variant       v  ON v.id = vt.variant_id
+        WHERE
+            i.name = _id
+            AND (
+                hash64_string(
+                    salt || ' - ' || _id || ':' || _val, 'murmur3'
+                )::NUMERIC
+            )
+            / x'FFFFFFFF'::BIGINT::NUMERIC <@ percent_range;
+    END;
+$$ language plpgsql strict;
